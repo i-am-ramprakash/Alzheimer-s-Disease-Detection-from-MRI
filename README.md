@@ -33,6 +33,18 @@ This high score applies only to these standardized, spatially aligned images. Th
 provide reliable patient IDs, so related slices from the same person may cross the image-level
 split. It is not evidence of patient-independent or clinical performance.
 
+## Learn the project
+
+The [learning center](docs/README.md) turns the repository into a guided course. It includes:
+
+- a [hands-on guide](docs/HANDS_ON_GUIDE.md) for setup, prediction, data preparation, training, and tests;
+- an [in-depth code and architecture walkthrough](docs/PROJECT_WALKTHROUGH.md);
+- a [plain-language guide to metrics, leakage, and limitations](docs/METRICS_AND_LIMITATIONS.md);
+- a [project glossary](docs/GLOSSARY.md) for unfamiliar terminology;
+- an [experiment log template](docs/EXPERIMENT_LOG_TEMPLATE.md) for controlled comparisons.
+
+If you are new to the project, follow the learning center before retraining a model.
+
 ## Quick prediction with the included model
 
 Create the environment:
@@ -140,6 +152,7 @@ alzheimer_detection/   Training, evaluation, prediction, and data preparation
 models/                Included high-accuracy SVM and metadata
 results/               Published held-out metrics and confusion matrix
 tests/                 Lightweight automated tests
+docs/                  Guided tutorials, architecture, metrics, and experiment notes
 MODEL_CARD.md           Model details and limitations
 requirements.txt       Pinned Python environment
 ```

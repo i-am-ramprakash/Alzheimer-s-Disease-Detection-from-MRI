@@ -1,0 +1,30 @@
+{
+  "model_file": "alzheimer_svm.joblib",
+  "model_type": "scikit-learn RBF SVM",
+  "class_keys": [
+    "mild_demented",
+    "moderate_demented",
+    "non_demented",
+    "very_mild_demented"
+  ],
+  "class_labels": [
+    "Mild Demented",
+    "Moderate Demented",
+    "Non Demented",
+    "Very Mild Demented"
+  ],
+  "directory_names": [
+    "MildDemented",
+    "ModerateDemented",
+    "NonDemented",
+    "VeryMildDemented"
+  ],
+  "image_size": [
+    32,
+    32
+  ],
+  "color_mode": "grayscale",
+  "c_value": 10.0,
+  "probabilities_calibrated": false,
+  "educational_use_only": true
+}

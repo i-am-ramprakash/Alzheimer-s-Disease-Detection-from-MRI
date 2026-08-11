@@ -1,6 +1,6 @@
 /* Clean White Clinical Palette - Alzheimer's MRI Classifier
    Clean white background, crisp light clinical theme, green accents (Forest, Leaf, Mint, Pear, Sage).
-   High legibility, flat matte clinical layout.
+   High legibility, flat matte clinical layout with 100% modal & interactive component styling.
 */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -1028,6 +1028,7 @@ canvas#mriCanvas {
 
 .m-cell {
   font-weight: 600;
+  cursor: pointer;
 }
 
 .cell-high { background: #e1f0e4; color: var(--green-forest); }
@@ -1153,6 +1154,13 @@ footer.compliance-bar {
   gap: 0.45rem;
   font-size: 0.72rem;
   color: var(--green-mint-text);
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+.comp-tag:hover {
+  background: #eef6f0;
 }
 
 .comp-tag i {
@@ -1162,4 +1170,137 @@ footer.compliance-bar {
 .comp-tag small {
   font-size: 0.62rem;
   color: var(--green-dim-text);
+}
+
+/* MODAL WINDOW STYLES */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 36, 23, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-window {
+  background: #ffffff;
+  border: 1px solid var(--green-border);
+  border-radius: var(--radius-md);
+  width: 90%;
+  max-width: 600px;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 1.25rem;
+  box-shadow: 0 8px 30px rgba(17, 36, 23, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--green-border);
+}
+
+.modal-header h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--green-forest);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-close-modal {
+  background: transparent;
+  border: none;
+  color: var(--green-mint-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.btn-close-modal:hover {
+  color: var(--green-tea-text);
+}
+
+.modal-body-text {
+  font-size: 0.8rem;
+  color: var(--green-tea-text);
+  line-height: 1.5;
+}
+
+.modal-explorer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.explorer-tile {
+  background: #f7faf7;
+  border: 1px solid var(--green-border);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem;
+  text-align: center;
+  cursor: pointer;
+}
+
+.explorer-tile:hover {
+  border-color: var(--green-forest);
+  background: #eef6f0;
+}
+
+.explorer-tile img {
+  width: 100%;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #000;
+}
+
+.explorer-tile span {
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-top: 0.35rem;
+  display: block;
+  color: var(--green-forest);
+}
+
+/* Toast Notifications */
+.toast-notification {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--green-forest);
+  color: #ffffff;
+  padding: 0.65rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 2000;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+.toast-notification.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }

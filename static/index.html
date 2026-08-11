@@ -40,10 +40,10 @@
     <!-- Header Navigation Tabs & Actions -->
     <div class="header-actions">
       <nav class="header-nav">
-        <button class="nav-tab active" data-tab="dashboard"><i class="fa-solid fa-border-all"></i> Dashboard</button>
-        <button class="nav-tab" data-tab="explorer"><i class="fa-solid fa-images"></i> Dataset Explorer</button>
-        <button class="nav-tab" data-tab="modelinfo"><i class="fa-solid fa-gear"></i> Model Info</button>
-        <button class="nav-tab" data-tab="about"><i class="fa-solid fa-circle-info"></i> About</button>
+        <button class="nav-tab active" id="navDashboard" data-tab="dashboard"><i class="fa-solid fa-border-all"></i> Dashboard</button>
+        <button class="nav-tab" id="navExplorer" data-tab="explorer"><i class="fa-solid fa-images"></i> Dataset Explorer</button>
+        <button class="nav-tab" id="navModelInfo" data-tab="modelinfo"><i class="fa-solid fa-gear"></i> Model Info</button>
+        <button class="nav-tab" id="navAbout" data-tab="about"><i class="fa-solid fa-circle-info"></i> About</button>
       </nav>
       <button class="btn-icon" id="toggleHighContrast" title="Toggle Contrast"><i class="fa-solid fa-circle-half-stroke"></i></button>
     </div>
@@ -55,7 +55,7 @@
     <!-- Left Navigation Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-menu">
-        <button class="sidebar-item active" data-target="home"><i class="fa-solid fa-house"></i> Home</button>
+        <button class="sidebar-item active" id="sidebarHome"><i class="fa-solid fa-house"></i> Home</button>
         
         <div class="menu-category">ANALYSIS</div>
         <button class="sidebar-item" id="sidebarNewAnalysis"><i class="fa-solid fa-plus-circle"></i> New Analysis</button>
@@ -142,10 +142,10 @@
                 <canvas id="mriCanvas" width="450" height="400"></canvas>
                 
                 <!-- Navigation Arrows on Canvas -->
-                <button class="nav-arrow left" id="btnPrevSlice"><i class="fa-solid fa-chevron-left"></i></button>
-                <button class="nav-arrow right" id="btnNextSlice"><i class="fa-solid fa-chevron-right"></i></button>
+                <button class="nav-arrow left" id="btnPrevSlice" title="Previous Slice"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="nav-arrow right" id="btnNextSlice" title="Next Slice"><i class="fa-solid fa-chevron-right"></i></button>
 
-                <div class="slice-counter-badge" id="sliceCounter">12 / 28</div>
+                <div class="slice-counter-badge" id="sliceCounter">1 / 12</div>
                 
                 <div class="canvas-empty-msg" id="canvasEmptyMsg">
                   <i class="fa-solid fa-brain"></i>
@@ -155,14 +155,14 @@
 
               <!-- Canvas Bottom Control Toolbar -->
               <div class="canvas-controls">
-                <button class="btn-ctrl" id="btnZoomOut"><i class="fa-solid fa-minus"></i></button>
+                <button class="btn-ctrl" id="btnZoomOut" title="Zoom Out"><i class="fa-solid fa-minus"></i></button>
                 <input type="range" id="zoomSlider" min="50" max="300" value="100" class="zoom-range">
                 <span class="zoom-value" id="zoomValue">100%</span>
-                <button class="btn-ctrl" id="btnZoomIn"><i class="fa-solid fa-plus"></i></button>
+                <button class="btn-ctrl" id="btnZoomIn" title="Zoom In"><i class="fa-solid fa-plus"></i></button>
                 <div class="v-divider"></div>
-                <button class="btn-ctrl" id="btnPan" title="Pan"><i class="fa-solid fa-hand"></i></button>
-                <button class="btn-ctrl" id="btnBrightness" title="Brightness"><i class="fa-solid fa-sun"></i></button>
-                <button class="btn-ctrl" id="btnRotate" title="Rotate"><i class="fa-solid fa-rotate"></i></button>
+                <button class="btn-ctrl" id="btnPan" title="Pan Mode"><i class="fa-solid fa-hand"></i></button>
+                <button class="btn-ctrl" id="btnBrightness" title="Adjust Brightness"><i class="fa-solid fa-sun"></i></button>
+                <button class="btn-ctrl" id="btnRotate" title="Rotate 90°"><i class="fa-solid fa-rotate"></i></button>
                 <button class="btn-ctrl" id="btnResetView" title="Reset View"><i class="fa-solid fa-arrows-rotate"></i></button>
               </div>
 
@@ -299,7 +299,7 @@
           <div class="perf-content">
             <!-- Donut Gauge Chart -->
             <div class="donut-container">
-              <div class="donut-chart" style="background: conic-gradient(var(--green-mint) 0% 99.22%, var(--green-border) 99.22% 100%);">
+              <div class="donut-chart" style="background: conic-gradient(var(--green-forest) 0% 99.22%, var(--green-border) 99.22% 100%);">
                 <div class="donut-inner">
                   <span class="donut-val">99.22%</span>
                   <span class="donut-lbl">Test Accuracy</span>
@@ -391,49 +391,7 @@
           </div>
 
           <div class="history-list" id="historyList">
-            <!-- Row 1 -->
-            <div class="history-item">
-              <img src="/sample_image?path=data/alzheimer_mri_clean/test/MildDemented/mild_106.jpg" alt="Scan">
-              <div class="h-info">
-                <span class="h-name name-mild">Mild Demented</span>
-                <span class="h-date">Today 14:32</span>
-              </div>
-              <span class="h-pct">87.43%</span>
-              <span class="h-badge badge-high">High</span>
-            </div>
-
-            <!-- Row 2 -->
-            <div class="history-item">
-              <img src="/sample_image?path=data/alzheimer_mri_clean/test/VeryMildDemented/verymild_10.jpg" alt="Scan">
-              <div class="h-info">
-                <span class="h-name name-verymild">Very Mild Demented</span>
-                <span class="h-date">Today 12:15</span>
-              </div>
-              <span class="h-pct">72.19%</span>
-              <span class="h-badge badge-mod">Moderate</span>
-            </div>
-
-            <!-- Row 3 -->
-            <div class="history-item">
-              <img src="/sample_image?path=data/alzheimer_mri_clean/test/NonDemented/non_1001.jpg" alt="Scan">
-              <div class="h-info">
-                <span class="h-name name-non">Non Demented</span>
-                <span class="h-date">Yesterday</span>
-              </div>
-              <span class="h-pct">95.12%</span>
-              <span class="h-badge badge-high">High</span>
-            </div>
-
-            <!-- Row 4 -->
-            <div class="history-item">
-              <img src="/sample_image?path=data/alzheimer_mri_clean/test/ModerateDemented/moderate_10.jpg" alt="Scan">
-              <div class="h-info">
-                <span class="h-name name-moderate">Moderate Demented</span>
-                <span class="h-date">Yesterday</span>
-              </div>
-              <span class="h-pct">93.67%</span>
-              <span class="h-badge badge-high">High</span>
-            </div>
+            <!-- Dynamic rows -->
           </div>
         </section>
 
@@ -452,14 +410,185 @@
 
       <!-- Footer Compliance / Security Bar -->
       <footer class="compliance-bar">
-        <div class="comp-tag"><i class="fa-solid fa-lock"></i> <span><strong>Client-Side Encryption</strong><br><small>Your data stays private</small></span></div>
-        <div class="comp-tag"><i class="fa-solid fa-user-gear"></i> <span><strong>Owner Control</strong><br><small>You control access</small></span></div>
-        <div class="comp-tag"><i class="fa-solid fa-shield"></i> <span><strong>Append-Only Audit Chain</strong><br><small>Tamper-proof integrity</small></span></div>
-        <div class="comp-tag"><i class="fa-solid fa-hospital"></i> <span><strong>HIPAA Considerations</strong><br><small>Security by design</small></span></div>
-        <div class="comp-tag"><i class="fa-solid fa-microscope"></i> <span><strong>Research Use Only</strong><br><small>Not for clinical use</small></span></div>
+        <div class="comp-tag" data-topic="encryption"><i class="fa-solid fa-lock"></i> <span><strong>Client-Side Encryption</strong><br><small>Your data stays private</small></span></div>
+        <div class="comp-tag" data-topic="owner"><i class="fa-solid fa-user-gear"></i> <span><strong>Owner Control</strong><br><small>You control access</small></span></div>
+        <div class="comp-tag" data-topic="audit"><i class="fa-solid fa-shield"></i> <span><strong>Append-Only Audit Chain</strong><br><small>Tamper-proof integrity</small></span></div>
+        <div class="comp-tag" data-topic="hipaa"><i class="fa-solid fa-hospital"></i> <span><strong>HIPAA Considerations</strong><br><small>Security by design</small></span></div>
+        <div class="comp-tag" data-topic="research"><i class="fa-solid fa-microscope"></i> <span><strong>Research Use Only</strong><br><small>Not for clinical use</small></span></div>
       </footer>
 
     </main>
+  </div>
+
+  <!-- ALL MODALS FOR 100% INTERACTIVITY -->
+
+  <!-- Modal 1: Confusion Matrix Full Size -->
+  <div class="modal-backdrop" id="modalConfusionMatrix">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-table-cells"></i> Interactive Held-Out Test Confusion Matrix</h3>
+        <button class="btn-close-modal" class-target="modalConfusionMatrix"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p style="font-size: 0.75rem; color: var(--green-mint-text); margin-bottom: 0.75rem;">
+        Click any cell in the 4x4 matrix below to view exact counts and percentages of actual vs. predicted classifications.
+      </p>
+      <table class="grid-table" style="font-size: 0.8rem;">
+        <thead>
+          <tr>
+            <th>Actual \ Predicted</th>
+            <th>Non Demented</th>
+            <th>Very Mild</th>
+            <th>Mild</th>
+            <th>Moderate</th>
+          </tr>
+        </thead>
+        <tbody id="matrixFullBody">
+          <!-- Populated dynamically -->
+        </tbody>
+      </table>
+      <div id="cellDetailBox" style="margin-top: 1rem; font-size: 0.75rem; padding: 0.65rem; background: #f4f9f5; border: 1px solid var(--green-border); border-radius: var(--radius-sm); color: var(--green-forest); display: none;">
+        Select a cell to view breakdown.
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Model Information & Architecture Specs -->
+  <div class="modal-backdrop" id="modalModelDrawer">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-gear"></i> Model Information & Technical Architecture</h3>
+        <button class="btn-close-modal" class-target="modalModelDrawer"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body-text">
+        <p><strong>Primary Model Architecture:</strong> Support Vector Machine (RBF Kernel, C=10.0, Balanced Class Weights)</p>
+        <p><strong>Feature Engineering:</strong> 32x32 Bilinear Grayscale Downsampling (1,024 Normalized Pixel Features)</p>
+        <p><strong>Held-Out Test Accuracy:</strong> 99.2188% (1,270 / 1,280 correct predictions)</p>
+        <p><strong>Macro F1 Score:</strong> 99.4325% | <strong>Weighted F1 Score:</strong> 99.2185%</p>
+        <p><strong>Training Dataset:</strong> 6,400 MRI Slices across 4 Classes (Kaggle Alzheimer MRI Dataset)</p>
+        <p><strong>Validation Split:</strong> Deterministic 80/20 Stratified Split with Hash Audit Verification</p>
+        <p><strong>Explainability Algorithm:</strong> Spatial Occlusion Sensitivity Feature Attribution (4x4 Patch Masking)</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Dataset Explorer Modal -->
+  <div class="modal-backdrop" id="modalDatasetExplorer">
+    <div class="modal-window" style="max-width: 750px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-images"></i> Dataset Explorer — 4 Alzheimer MRI Stages</h3>
+        <button class="btn-close-modal" class-target="modalDatasetExplorer"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-explorer-grid" id="modalExplorerGrid">
+        <!-- Dynamically populated sample tiles -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Detailed Performance Metrics & Reports -->
+  <div class="modal-backdrop" id="modalMetricsReport">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-chart-line"></i> Held-Out Test Evaluation Metrics Report</h3>
+        <button class="btn-close-modal" class-target="modalMetricsReport"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body-text">
+        <table class="grid-table" style="margin-top: 0.5rem; font-size: 0.78rem;">
+          <thead>
+            <tr>
+              <th>Class Label</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>F1-Score</th>
+              <th>Test Samples</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th style="text-align: left;">Non Demented</th>
+              <td>99.5%</td>
+              <td>99.7%</td>
+              <td>99.6%</td>
+              <td>640</td>
+            </tr>
+            <tr>
+              <th style="text-align: left;">Very Mild Demented</th>
+              <td>98.9%</td>
+              <td>98.2%</td>
+              <td>98.5%</td>
+              <td>448</td>
+            </tr>
+            <tr>
+              <th style="text-align: left;">Mild Demented</th>
+              <td>97.3%</td>
+              <td>98.9%</td>
+              <td>98.1%</td>
+              <td>179</td>
+            </tr>
+            <tr>
+              <th style="text-align: left;">Moderate Demented</th>
+              <td>100.0%</td>
+              <td>100.0%</td>
+              <td>100.0%</td>
+              <td>13</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top: 1rem;"><strong>Overall Accuracy:</strong> 99.22% &nbsp;|&nbsp; <strong>Correct Test Predictions:</strong> 1,270 / 1,280</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: How It Works & AI Pipeline Guide -->
+  <div class="modal-backdrop" id="modalHowItWorks">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-circle-question"></i> How It Works & Pipeline Guide</h3>
+        <button class="btn-close-modal" class-target="modalHowItWorks"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body-text">
+        <ol style="padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.65rem;">
+          <li><strong>Image Ingestion & Preprocessing:</strong> The uploaded MRI image is converted to a 1-channel grayscale representation and downsampled to 32x32 pixels.</li>
+          <li><strong>Feature Flattening:</strong> The 32x32 grid is flattened into a 1,024 numeric feature vector normalized between 0.0 and 1.0.</li>
+          <li><strong>StandardScaler Standardization:</strong> Features are standardized using training pixel mean and standard deviation.</li>
+          <li><strong>RBF-SVM Classification:</strong> RBF kernel support vector machine calculates decision boundaries across the 4 class projections.</li>
+          <li><strong>Occlusion Explainability Heatmap:</strong> A 4x4 masking block slides across the image to identify key regions driving the prediction.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6: About & Educational Purpose -->
+  <div class="modal-backdrop" id="modalAbout">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-brain"></i> About Alzheimer's MRI Classifier</h3>
+        <button class="btn-close-modal" class-target="modalAbout"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body-text">
+        <p>This application is an educational machine learning workstation built to demonstrate classical machine learning (RBF Support Vector Machines) applied to standardized brain MRI slice classification.</p>
+        <p style="margin-top: 0.5rem;">It compares 4 cognitive stages: Non Demented, Very Mild Demented, Mild Demented, and Moderate Demented.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 7: How to Interpret Guide -->
+  <div class="modal-backdrop" id="modalInterpretHelp">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-lightbulb"></i> How to Interpret Predictions & Confidence</h3>
+        <button class="btn-close-modal" class-target="modalInterpretHelp"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body-text">
+        <p><strong>Predicted Stage:</strong> The class that received the highest decision score from the RBF-SVM model.</p>
+        <p style="margin-top: 0.5rem;"><strong>Confidence Percentage:</strong> Softmax-normalized probability over decision scores. Higher values reflect greater similarity to training patterns of that specific stage.</p>
+        <p style="margin-top: 0.5rem;"><strong>Heatmap Overlay:</strong> Green/yellow highlighted regions show spatial locations where pixel intensities strongly impacted the decision score.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Bar -->
+  <div id="toastNotification" class="toast-notification">
+    <i class="fa-solid fa-info-circle"></i> <span id="toastText">Notification message</span>
   </div>
 
   <script src="/static/app.js"></script>

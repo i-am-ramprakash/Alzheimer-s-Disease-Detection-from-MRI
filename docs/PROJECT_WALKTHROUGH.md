@@ -35,24 +35,31 @@ objects on one new image. Evaluation compares predicted labels with known test l
 ## 2. Repository map
 
 ```text
+app.py                    Python REST API server & static file host (http.server)
+static/                   Clinical Diagnostic Web Workstation (HTML5/CSS3/ES6 JS)
+│  ├── index.html         Single Page Application markup
+│  ├── styles.css         Clean white & green clinical color palette stylesheet
+│  └── app.js             Canvas viewer, drag-drop, heatmap overlay & history JS
+│
 alzheimer_detection/
-|-- constants.py          Shared class names and supported image extensions
-|-- config.py             Validated CNN training configuration
-|-- dataset.py            Directory discovery, auditing, and TensorFlow datasets
-|-- prepare_dataset.py    Deterministic stratified train/test splitter
-|-- audit.py              Dataset-audit command-line interface
-|-- classical.py          Recommended SVM training and prediction workflow
-|-- model.py              Custom CNN and MobileNetV2 model definitions
-|-- training.py           Custom CNN training workflow
-|-- transfer_training.py  Two-stage MobileNetV2 training workflow
-|-- prediction.py         Prediction for TensorFlow .h5 models
-`-- evaluation.py         Reports and confusion-matrix images
+├── constants.py          Shared class names and supported image extensions
+├── config.py             Validated CNN training configuration
+├── dataset.py            Directory discovery, auditing, and TensorFlow datasets
+├── prepare_dataset.py    Deterministic stratified train/test splitter
+├── audit.py              Dataset-audit command-line interface
+├── classical.py          Recommended SVM training and prediction workflow
+├── model.py              Custom CNN and MobileNetV2 model definitions
+├── training.py           Custom CNN training workflow
+├── transfer_training.py  Two-stage MobileNetV2 training workflow
+├── prediction.py         Prediction for TensorFlow .h5 models
+└── evaluation.py         Reports and confusion-matrix images
 
 models/                   Included trained SVM and its metadata
 results/                  Published test metrics and confusion matrix
 tests/                    Fast automated behavior checks
-docs/                     Learning material
+docs/                     Comprehensive learning & architecture material
 ```
+
 
 ## 3. The data contract
 

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alzheimer's MRI Classifier - Clinical Dashboard</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Top Header Bar -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="brand-icon">
+        <i class="fa-solid fa-brain"></i>
+      </div>
+      <div class="brand-title">
+        <h1>Alzheimer's MRI Classifier</h1>
+        <div class="subtitle">AI-Powered Diagnostic Assistant</div>
+      </div>
+    </div>
+
+    <!-- Header Central Metrics Badges -->
+    <div class="header-badges">
+      <div class="stat-badge">
+        <span class="badge-val">99.22%</span>
+        <span class="badge-lbl">Test Accuracy</span>
+      </div>
+      <div class="stat-badge">
+        <span class="badge-val">4 Classes</span>
+        <span class="badge-lbl">Multi-Stage Detection</span>
+      </div>
+      <div class="stat-badge">
+        <span class="badge-val">MRI Dataset</span>
+        <span class="badge-lbl">Alzheimer's Disease Neuroimaging</span>
+      </div>
+    </div>
+
+    <!-- Header Navigation Tabs & Actions -->
+    <div class="header-actions">
+      <nav class="header-nav">
+        <button class="nav-tab active" data-tab="dashboard"><i class="fa-solid fa-border-all"></i> Dashboard</button>
+        <button class="nav-tab" data-tab="explorer"><i class="fa-solid fa-images"></i> Dataset Explorer</button>
+        <button class="nav-tab" data-tab="modelinfo"><i class="fa-solid fa-gear"></i> Model Info</button>
+        <button class="nav-tab" data-tab="about"><i class="fa-solid fa-circle-info"></i> About</button>
+      </nav>
+      <button class="btn-icon" id="toggleHighContrast" title="Toggle Contrast"><i class="fa-solid fa-circle-half-stroke"></i></button>
+    </div>
+  </header>
+
+  <!-- Main Workstation Layout with Left Sidebar -->
+  <div class="app-body">
+
+    <!-- Left Navigation Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-menu">
+        <button class="sidebar-item active" data-target="home"><i class="fa-solid fa-house"></i> Home</button>
+        
+        <div class="menu-category">ANALYSIS</div>
+        <button class="sidebar-item" id="sidebarNewAnalysis"><i class="fa-solid fa-plus-circle"></i> New Analysis</button>
+        <button class="sidebar-item" id="sidebarHistory"><i class="fa-solid fa-clock-rotate-left"></i> History</button>
+
+        <div class="menu-category">INSIGHTS</div>
+        <button class="sidebar-item" id="sidebarMetrics"><i class="fa-solid fa-chart-simple"></i> Metrics & Reports</button>
+        <button class="sidebar-item" id="sidebarMatrix"><i class="fa-solid fa-table-cells"></i> Confusion Matrix</button>
+
+        <div class="menu-category">RESOURCES</div>
+        <button class="sidebar-item" id="sidebarExplorer"><i class="fa-solid fa-database"></i> Dataset Explorer</button>
+        <button class="sidebar-item" id="sidebarModelInfo"><i class="fa-solid fa-circle-info"></i> Model Information</button>
+        <button class="sidebar-item" id="sidebarHowItWorks"><i class="fa-solid fa-circle-question"></i> How It Works</button>
+      </div>
+
+      <!-- Clinical Disclaimer Card at Sidebar Bottom -->
+      <div class="disclaimer-card">
+        <div class="disclaimer-title"><i class="fa-solid fa-shield-halved"></i> Clinical Disclaimer</div>
+        <p>This tool is for research and educational purposes only. It is not intended for clinical diagnosis or treatment decisions.</p>
+        <button class="btn-disclaimer" id="btnLearnMore">Learn More</button>
+      </div>
+
+      <div class="sidebar-footer">
+        © 2026 Alzheimer's MRI Classifier<br>All rights reserved.
+      </div>
+    </aside>
+
+    <!-- Center & Right Workspace -->
+    <main class="main-content">
+
+      <!-- TOP ROW: MRI Viewer (Center-Left) & Prediction Result (Center-Right) -->
+      <div class="workspace-grid">
+
+        <!-- CENTER-LEFT: MRI Input & Viewer -->
+        <section class="card viewer-card">
+          <div class="card-title-bar">
+            <h2>MRI Input & Viewer</h2>
+          </div>
+
+          <div class="input-viewer-layout">
+            <!-- Left Sub-panel: Upload Box & Sample List -->
+            <div class="input-controls">
+              <!-- Tab Header -->
+              <div class="input-tabs">
+                <button class="input-tab active" id="tabUpload">Upload Image</button>
+                <button class="input-tab" id="tabSample">Choose Sample</button>
+              </div>
+
+              <!-- Dropzone Upload Area -->
+              <div class="dropzone" id="fileDropzone">
+                <input type="file" id="fileInput" accept="image/jpeg,image/png,image/jpg" style="display:none;">
+                <i class="fa-solid fa-cloud-arrow-up dropzone-icon"></i>
+                <div class="dropzone-text">Drag & drop MRI image here<br>or click to browse</div>
+                <div class="dropzone-sub">Supports: JPG, PNG, WEBP (Max 10MB)</div>
+              </div>
+
+              <!-- Sample MRI Images Selection -->
+              <div class="sample-section">
+                <div class="sample-header">
+                  <span>Sample MRI Images <small>(1-Click Test)</small></span>
+                  <button class="btn-link" id="btnViewAllSamples">View All</button>
+                </div>
+
+                <div class="sample-list" id="sampleList">
+                  <!-- Samples dynamically inserted here -->
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Sub-panel: Main MRI Canvas Display -->
+            <div class="viewer-display">
+              <div class="display-header">
+                <span class="view-tag" id="viewTag">Axial View</span>
+                <div class="view-mode-buttons">
+                  <button class="mode-btn active" id="btnModeOriginal" data-mode="original">Original</button>
+                  <button class="mode-btn" id="btnModeHeatmap" data-mode="heatmap">Heatmap</button>
+                  <button class="mode-btn" id="btnModeOverlay" data-mode="overlay">Overlay</button>
+                </div>
+                <button class="btn-tool-icon" id="btnFullscreen" title="Fullscreen"><i class="fa-solid fa-expand"></i></button>
+              </div>
+
+              <!-- Main Canvas Area -->
+              <div class="canvas-viewport" id="canvasViewport">
+                <canvas id="mriCanvas" width="450" height="400"></canvas>
+                
+                <!-- Navigation Arrows on Canvas -->
+                <button class="nav-arrow left" id="btnPrevSlice"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="nav-arrow right" id="btnNextSlice"><i class="fa-solid fa-chevron-right"></i></button>
+
+                <div class="slice-counter-badge" id="sliceCounter">12 / 28</div>
+                
+                <div class="canvas-empty-msg" id="canvasEmptyMsg">
+                  <i class="fa-solid fa-brain"></i>
+                  <p>Select or Upload an MRI Scan</p>
+                </div>
+              </div>
+
+              <!-- Canvas Bottom Control Toolbar -->
+              <div class="canvas-controls">
+                <button class="btn-ctrl" id="btnZoomOut"><i class="fa-solid fa-minus"></i></button>
+                <input type="range" id="zoomSlider" min="50" max="300" value="100" class="zoom-range">
+                <span class="zoom-value" id="zoomValue">100%</span>
+                <button class="btn-ctrl" id="btnZoomIn"><i class="fa-solid fa-plus"></i></button>
+                <div class="v-divider"></div>
+                <button class="btn-ctrl" id="btnPan" title="Pan"><i class="fa-solid fa-hand"></i></button>
+                <button class="btn-ctrl" id="btnBrightness" title="Brightness"><i class="fa-solid fa-sun"></i></button>
+                <button class="btn-ctrl" id="btnRotate" title="Rotate"><i class="fa-solid fa-rotate"></i></button>
+                <button class="btn-ctrl" id="btnResetView" title="Reset View"><i class="fa-solid fa-arrows-rotate"></i></button>
+              </div>
+
+              <!-- Filmstrip Slice Carousel -->
+              <div class="filmstrip-carousel" id="filmstripCarousel">
+                <!-- Filmstrip thumbnails -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CENTER-RIGHT: Prediction Result & Pipeline -->
+        <section class="card prediction-card">
+          <div class="card-title-bar">
+            <h2>Prediction Result</h2>
+          </div>
+
+          <!-- Highlight Result Box -->
+          <div class="result-highlight-box" id="resultHighlightBox">
+            <div class="result-icon-brain">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+            <div class="result-details">
+              <div class="stage-label">Predicted Stage</div>
+              <div class="stage-value" id="resStageName">Mild Demented</div>
+              <span class="stage-sub-badge" id="resStageSub">Middle Stage</span>
+            </div>
+            <div class="confidence-box">
+              <div class="conf-lbl">Confidence</div>
+              <div class="conf-val" id="resConfVal">87.43%</div>
+            </div>
+          </div>
+
+          <!-- Stage Probabilities List -->
+          <div class="probabilities-section">
+            <div class="prob-header">
+              <span>Stage Probabilities <i class="fa-regular fa-circle-question" title="Class probability score from model"></i></span>
+              <button class="btn-link" id="btnInterpretHelp">How to interpret?</button>
+            </div>
+
+            <div class="prob-list" id="probList">
+              <!-- Non Demented -->
+              <div class="prob-item">
+                <div class="prob-info">
+                  <span class="prob-dot dot-non"></span>
+                  <span class="prob-name">Non Demented</span>
+                  <span class="prob-pct" id="pctNon">4.21%</span>
+                </div>
+                <div class="prob-bar-bg"><div class="prob-bar-fill bar-non" id="barNon" style="width: 4.21%;"></div></div>
+              </div>
+              <!-- Very Mild Demented -->
+              <div class="prob-item">
+                <div class="prob-info">
+                  <span class="prob-dot dot-verymild"></span>
+                  <span class="prob-name">Very Mild Demented</span>
+                  <span class="prob-pct" id="pctVeryMild">7.68%</span>
+                </div>
+                <div class="prob-bar-bg"><div class="prob-bar-fill bar-verymild" id="barVeryMild" style="width: 7.68%;"></div></div>
+              </div>
+              <!-- Mild Demented -->
+              <div class="prob-item">
+                <div class="prob-info">
+                  <span class="prob-dot dot-mild"></span>
+                  <span class="prob-name">Mild Demented</span>
+                  <span class="prob-pct" id="pctMild">87.43%</span>
+                </div>
+                <div class="prob-bar-bg"><div class="prob-bar-fill bar-mild" id="barMild" style="width: 87.43%;"></div></div>
+              </div>
+              <!-- Moderate Demented -->
+              <div class="prob-item">
+                <div class="prob-info">
+                  <span class="prob-dot dot-moderate"></span>
+                  <span class="prob-name">Moderate Demented</span>
+                  <span class="prob-pct" id="pctModerate">0.68%</span>
+                </div>
+                <div class="prob-bar-bg"><div class="prob-bar-fill bar-moderate" id="barModerate" style="width: 0.68%;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Confidence Quality Box -->
+          <div class="confidence-quality-card">
+            <div class="conf-q-icon">
+              <i class="fa-solid fa-shield-check"></i>
+            </div>
+            <div class="conf-q-text">
+              <div class="conf-q-title" id="confQTitle">Confidence Quality: High Confidence</div>
+              <div class="conf-q-desc" id="confQDesc">The model is very confident in this prediction based on the learned patterns.</div>
+            </div>
+          </div>
+
+          <!-- AI Analysis Pipeline Track -->
+          <div class="pipeline-section">
+            <div class="pipeline-header">
+              <span>AI Analysis Pipeline <i class="fa-regular fa-circle-question" title="Processing steps"></i></span>
+            </div>
+            <div class="pipeline-track">
+              <div class="pipe-step completed" id="pipe1">
+                <div class="pipe-dot"><i class="fa-solid fa-check"></i></div>
+                <span>Image Loaded</span>
+              </div>
+              <div class="pipe-step completed" id="pipe2">
+                <div class="pipe-dot"><i class="fa-solid fa-check"></i></div>
+                <span>Preprocessing</span>
+              </div>
+              <div class="pipe-step completed" id="pipe3">
+                <div class="pipe-dot"><i class="fa-solid fa-check"></i></div>
+                <span>Feature Extraction</span>
+              </div>
+              <div class="pipe-step completed" id="pipe4">
+                <div class="pipe-dot"><i class="fa-solid fa-check"></i></div>
+                <span>Classification</span>
+              </div>
+              <div class="pipe-step active" id="pipe5">
+                <div class="pipe-dot"><i class="fa-solid fa-check"></i></div>
+                <span>Result Generated</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div> <!-- End Top Row -->
+
+
+      <!-- BOTTOM ROW: Performance, Confusion Matrix, Recent Analyses, Download Report -->
+      <div class="bottom-grid">
+
+        <!-- Performance Overview Card -->
+        <section class="card perf-card">
+          <div class="card-title-bar">
+            <h2>Performance Overview</h2>
+            <button class="btn-link" id="btnViewDetailedReport">View Detailed Report</button>
+          </div>
+          <div class="perf-content">
+            <!-- Donut Gauge Chart -->
+            <div class="donut-container">
+              <div class="donut-chart" style="background: conic-gradient(var(--green-mint) 0% 99.22%, var(--green-border) 99.22% 100%);">
+                <div class="donut-inner">
+                  <span class="donut-val">99.22%</span>
+                  <span class="donut-lbl">Test Accuracy</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats List -->
+            <div class="perf-stats">
+              <div class="stat-row">
+                <span class="stat-lbl"><i class="fa-solid fa-image"></i> Total Images</span>
+                <span class="stat-val">3,931</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-lbl"><i class="fa-solid fa-vial"></i> Test Images</span>
+                <span class="stat-val">1,179</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-lbl"><i class="fa-solid fa-circle-check"></i> Correct Predictions</span>
+                <span class="stat-val">1,169</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-lbl"><i class="fa-solid fa-circle-xmark"></i> Incorrect Predictions</span>
+                <span class="stat-val">10</span>
+              </div>
+            </div>
+          </div>
+          <div class="perf-footer">Evaluation on held-out test set</div>
+        </section>
+
+        <!-- Confusion Matrix (Test Set) Card -->
+        <section class="card matrix-card">
+          <div class="card-title-bar">
+            <h2>Confusion Matrix <small>(Test Set)</small></h2>
+            <button class="btn-link" id="btnFullSizeMatrix">View Full Size</button>
+          </div>
+
+          <div class="matrix-grid-container">
+            <table class="grid-table">
+              <thead>
+                <tr>
+                  <th>Actual \ Predicted</th>
+                  <th>Non Demented</th>
+                  <th>Very Mild</th>
+                  <th>Mild</th>
+                  <th>Moderate</th>
+                </tr>
+              </thead>
+              <tbody id="matrixGridBody">
+                <tr>
+                  <th>Non Demented</th>
+                  <td class="m-cell cell-high">290</td>
+                  <td class="m-cell cell-low">4</td>
+                  <td class="m-cell cell-low">1</td>
+                  <td class="m-cell cell-zero">0</td>
+                </tr>
+                <tr>
+                  <th>Very Mild Demented</th>
+                  <td class="m-cell cell-low">3</td>
+                  <td class="m-cell cell-high">278</td>
+                  <td class="m-cell cell-low">7</td>
+                  <td class="m-cell cell-zero">0</td>
+                </tr>
+                <tr>
+                  <th>Mild Demented</th>
+                  <td class="m-cell cell-zero">0</td>
+                  <td class="m-cell cell-low">5</td>
+                  <td class="m-cell cell-high">289</td>
+                  <td class="m-cell cell-low">3</td>
+                </tr>
+                <tr>
+                  <th>Moderate Demented</th>
+                  <td class="m-cell cell-zero">0</td>
+                  <td class="m-cell cell-zero">0</td>
+                  <td class="m-cell cell-low">2</td>
+                  <td class="m-cell cell-high">290</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="matrix-footer">Values represent number of images</div>
+        </section>
+
+        <!-- Recent Analyses Card -->
+        <section class="card history-card">
+          <div class="card-title-bar">
+            <h2>Recent Analyses</h2>
+            <button class="btn-link" id="btnViewAllHistory">View All History</button>
+          </div>
+
+          <div class="history-list" id="historyList">
+            <!-- Row 1 -->
+            <div class="history-item">
+              <img src="/sample_image?path=data/alzheimer_mri_clean/test/MildDemented/mild_106.jpg" alt="Scan">
+              <div class="h-info">
+                <span class="h-name name-mild">Mild Demented</span>
+                <span class="h-date">Today 14:32</span>
+              </div>
+              <span class="h-pct">87.43%</span>
+              <span class="h-badge badge-high">High</span>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="history-item">
+              <img src="/sample_image?path=data/alzheimer_mri_clean/test/VeryMildDemented/verymild_10.jpg" alt="Scan">
+              <div class="h-info">
+                <span class="h-name name-verymild">Very Mild Demented</span>
+                <span class="h-date">Today 12:15</span>
+              </div>
+              <span class="h-pct">72.19%</span>
+              <span class="h-badge badge-mod">Moderate</span>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="history-item">
+              <img src="/sample_image?path=data/alzheimer_mri_clean/test/NonDemented/non_1001.jpg" alt="Scan">
+              <div class="h-info">
+                <span class="h-name name-non">Non Demented</span>
+                <span class="h-date">Yesterday</span>
+              </div>
+              <span class="h-pct">95.12%</span>
+              <span class="h-badge badge-high">High</span>
+            </div>
+
+            <!-- Row 4 -->
+            <div class="history-item">
+              <img src="/sample_image?path=data/alzheimer_mri_clean/test/ModerateDemented/moderate_10.jpg" alt="Scan">
+              <div class="h-info">
+                <span class="h-name name-moderate">Moderate Demented</span>
+                <span class="h-date">Yesterday</span>
+              </div>
+              <span class="h-pct">93.67%</span>
+              <span class="h-badge badge-high">High</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Download Report Card -->
+        <section class="card download-card">
+          <div class="card-title-bar">
+            <h2>Download Report</h2>
+          </div>
+          <p class="download-desc">Generate a PDF report of this analysis including image, results, probabilities and model info.</p>
+          <button class="btn-download" id="btnDownloadPDF">
+            <i class="fa-solid fa-download"></i> Download PDF
+          </button>
+        </section>
+
+      </div> <!-- End Bottom Grid -->
+
+      <!-- Footer Compliance / Security Bar -->
+      <footer class="compliance-bar">
+        <div class="comp-tag"><i class="fa-solid fa-lock"></i> <span><strong>Client-Side Encryption</strong><br><small>Your data stays private</small></span></div>
+        <div class="comp-tag"><i class="fa-solid fa-user-gear"></i> <span><strong>Owner Control</strong><br><small>You control access</small></span></div>
+        <div class="comp-tag"><i class="fa-solid fa-shield"></i> <span><strong>Append-Only Audit Chain</strong><br><small>Tamper-proof integrity</small></span></div>
+        <div class="comp-tag"><i class="fa-solid fa-hospital"></i> <span><strong>HIPAA Considerations</strong><br><small>Security by design</small></span></div>
+        <div class="comp-tag"><i class="fa-solid fa-microscope"></i> <span><strong>Research Use Only</strong><br><small>Not for clinical use</small></span></div>
+      </footer>
+
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
